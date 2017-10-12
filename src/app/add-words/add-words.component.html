@@ -1,0 +1,42 @@
+<div style="width:100%">
+        <nav>
+            <a routerLink="/addthemes">Назад</a>
+        </nav>
+        
+    <form (ngSubmit)="addWord(nameWord,translationWord,this.paramUrl)" #heroForm="ngForm">
+      <md-input-container class="example-full-width">
+          <input mdInput [(ngModel)]="nameWord" (keyup)="onKey()"  placeholder="Введите новое слово" name="efew">
+      </md-input-container>
+      <md-input-container class="example-full-width">
+          <input mdInput [(ngModel)]="translationWord" placeholder="Введите перевод слова" name="dsfs">
+      </md-input-container>
+      <button md-raised-button color="primary" type="submit">Добавить</button>
+      <md-progress-spinner *ngIf="isLoad" mode="indeterminate"></md-progress-spinner>
+      <h3>{{ translationWord }}</h3>
+    </form>
+    
+    <md-card *ngFor="let word of this.BdReadAndWriteService.words | async" style="margin-top:8px;">
+            <md-card-header>
+              <md-card-title><h3>{{word.nameWord}}</h3></md-card-title>
+            </md-card-header>
+            <md-card-content>
+                <md-list>
+                       
+                    <md-list-item *ngFor="let trWord of word | translationWords">
+                       
+                        <span style="flex: 1 1 auto;">
+                            {{ trWord.translationWord }}
+                        </span>
+                        <button md-icon-button (click)="deleteWord(word.$key,trWord.key)">
+                                <md-icon svgIcon="close"></md-icon>
+                            </button>
+                    </md-list-item>
+                </md-list>
+              
+            </md-card-content>
+          </md-card>
+
+
+
+
+  </div>

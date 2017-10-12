@@ -1,0 +1,29 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+    <h1>
+      Добро пожаловать в !
+    </h1>
+    
+    <div class="example-form" style="width:500px">
+      <table style="width:100%" cellspacing="0"><tr>
+        <td>
+          <md-input-container class="example-full-width">
+            <input mdInput #email placeholder="Email">
+          </md-input-container>
+        </td>
+        <td>
+          <md-input-container class="example-full-width">
+              <input mdInput #password placeholder="Password">
+          </md-input-container>
+        </td>
+      </tr></table>
+        
+        
+  
+        <button md-raised-button color="primary" (click)="login(email.value,password.value)">Войти</button>
+    </div>
+    
+  </div>
+  
+  
+  
