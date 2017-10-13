@@ -1,29 +1,47 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-    <h1>
-      Добро пожаловать в !
-    </h1>
+<md-tab-group>
+    <md-tab label="Вход" position=0>
+        <form class="example-form">
+            <md-list>
+                <md-list-item>
+                  <md-input-container class="example-full-width">
+                    <input mdInput #email placeholder="Email">
+                  </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                  <md-input-container class="example-full-width">
+                    <input mdInput #password placeholder="Password">
+                  </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <button md-raised-button color="primary" (click)="login(email.value,password.value)">Войти</button>
+                </md-list-item>
+            </md-list>
+          </form>
+    </md-tab>
+    <md-tab label="Регистрация">
+        <form class="example-form">
+            <md-list>
+                <md-list-item>
+                  <md-input-container class="example-full-width">
+                    <input mdInput #emailReg placeholder="Email">
+                  </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                  <md-input-container class="example-full-width">
+                    <input mdInput #passwordReg placeholder="Password">
+                  </md-input-container>
+                </md-list-item>
+                <md-list-item>
+                    <button md-raised-button color="primary" (click)="register(emailReg.value,passwordReg.value)">Зарегистрироваться</button>
+                </md-list-item>
+            </md-list>
+          </form>
+    </md-tab>
+</md-tab-group>
+
     
-    <div class="example-form" style="width:500px">
-      <table style="width:100%" cellspacing="0"><tr>
-        <td>
-          <md-input-container class="example-full-width">
-            <input mdInput #email placeholder="Email">
-          </md-input-container>
-        </td>
-        <td>
-          <md-input-container class="example-full-width">
-              <input mdInput #password placeholder="Password">
-          </md-input-container>
-        </td>
-      </tr></table>
-        
-        
-  
-        <button md-raised-button color="primary" (click)="login(email.value,password.value)">Войти</button>
-    </div>
-    
-  </div>
+
   
   
   

@@ -59,12 +59,25 @@ export class FormAuthComponent{
       //Вход пользователя
       this.AuthService.login(email,password).then((data) => {
         //Проверяем пришла ли ошибка при проверки данных
+        
         if(!data){
           console.log('Ошибка при входе пользователя');
         }else{
           this.router.navigate(['/addthemes']);
         }
-      })
+      });
+    }
+
+    register(email:string,password:string){
+      //Регистрация пользователя
+      this.AuthService.register(email,password).then((data) => {
+        //Проверяем пришла ли ошибка при проверки данных
+        if(!data){
+          console.log('Ошибка при входе пользователя');
+        }else{
+          this.router.navigate(['/addthemes']);
+        }
+      });
     }
       //Создание пользователя
       /*this.afAuth.auth.createUserWithEmailAndPassword(email, password)

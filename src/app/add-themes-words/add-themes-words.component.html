@@ -5,10 +5,6 @@
   <button md-raised-button color="primary" (click)="addTheme(nameTheme.value)">Добавить</button>
 </div>
 
-
-<button md-raised-button color="primary" (click)="start()">Начать работу</button>
-<button md-raised-button color="primary" (click)="stop()">Остановить работу</button>
-{{ this.textSel.textSelection }}
 <md-grid-list cols="2" rowHeight="2:1">
     <md-grid-tile *ngFor="let theme of this.BdReadAndWriteService.themes | async">
         <a md-button routerLink="{{ theme.$key }}"> {{ theme.theme }} </a>

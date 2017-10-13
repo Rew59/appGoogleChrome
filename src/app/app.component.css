@@ -1,0 +1,9 @@
+.nav-text{
+    padding-right: 15px;
+}
+.nav-left-icon{
+  padding-right: 10px;
+}
+.example-spacer {
+  flex: 1 1 auto;
+}

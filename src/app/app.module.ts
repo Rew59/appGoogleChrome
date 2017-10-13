@@ -12,7 +12,9 @@ import {MdInputModule,
   MdProgressSpinnerModule, 
   MdCardModule,
   MdListModule,
-  MdIconModule
+  MdIconModule,
+  MdToolbarModule,
+  MdTabsModule
 } from '@angular/material';
 
 // New imports to update based on AngularFire2 version 4
@@ -30,6 +32,7 @@ import { AddWordsComponent } from './add-words/add-words.component';
 import { AuthService } from './auth.service';
 import { BdReadAndWriteService } from './bd-read-and-write.service';
 import { TextSelectionService } from './text-selection.service';
+import { AddChromeStorageNavigateService } from './add-chrome-storage-navigate.service';
 import { TranslationWordsPipe } from './translation-words.pipe';
 
 const appRoutes: Routes = [
@@ -61,6 +64,8 @@ const appRoutes: Routes = [
     MdCardModule,
     MdListModule,
     MdIconModule,
+    MdToolbarModule,
+    MdTabsModule,
 
     AngularFireModule.initializeApp(environment.firebase,'myApp'),
     AngularFireDatabaseModule,
@@ -73,7 +78,8 @@ const appRoutes: Routes = [
   providers: [
     AuthService,
     BdReadAndWriteService,
-    TextSelectionService
+    TextSelectionService,
+    AddChromeStorageNavigateService
   ],
   bootstrap: [AppComponent]
 })

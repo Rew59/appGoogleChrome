@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 //import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 //import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
+import {Subscription} from 'rxjs/Subscription'
 import * as firebase from 'firebase/app';
 import { AuthService } from '../auth.service';
 import { BdReadAndWriteService } from '../bd-read-and-write.service';
 import { TextSelectionService } from '../text-selection.service';
+import { AddChromeStorageNavigateService } from '../add-chrome-storage-navigate.service';
 
-import { Router,NavigationEnd, CanActivate,ActivatedRouteSnapshot,
+import { Router,NavigationEnd, NavigationStart, CanActivate,ActivatedRouteSnapshot,
   RouterStateSnapshot } from '@angular/router';
 
 @Component({
@@ -17,7 +19,9 @@ import { Router,NavigationEnd, CanActivate,ActivatedRouteSnapshot,
   styleUrls: ['./add-themes-words.component.css']
 })
 
-export class AddThemesWordsComponent implements OnInit /*implements CanActivate*/  {
+export class AddThemesWordsComponent implements OnInit/*, OnDestroy /*implements CanActivate*/  {
+  //subscrEventUrl: Subscription;
+  //isInizialSubscrEventUrl:boolean;
   uID;
   //linkDb: FirebaseListObservable<any>;
   user/*: Observable<firebase.User>*/;
@@ -28,7 +32,8 @@ export class AddThemesWordsComponent implements OnInit /*implements CanActivate*
   constructor(private AuthService: AuthService,
     public BdReadAndWriteService:BdReadAndWriteService,
     private router: Router,
-    public textSel:TextSelectionService) {
+    public textSel:TextSelectionService,
+    public chromeNavigateService:AddChromeStorageNavigateService) {
      //this.BdReadAndWriteService.getThemes().subscribe((val)=>console.log(val));
      /*this.AuthService.afAuth.authState.subscribe(
       (user: firebase.User) => {
@@ -101,21 +106,30 @@ export class AddThemesWordsComponent implements OnInit /*implements CanActivate*
   }
 
   ngOnInit(){
-    
-    //Отслеживание изменения маршрута router
-    this.router.events
-    .filter(event => event instanceof NavigationEnd)
-    .subscribe((event:NavigationEnd) => {
-      console.log('This router'+this.router.url);
-      // You only receive NavigationStart events
-      if(this.router.url){
-        chrome.storage.sync.set({'navigate': this.router.url}, function() {
-          // Notify that we saved.
-          console.log('Запись в storage о изменении пути добавлена: ');
-        });
-        console.log("Навигация изменилась"+ this.router.url);
-      }
+    /*let i = 1;
+    this.subscrEventUrl = this.router.events.subscribe((event) => {
+      console.log(i++);
     });
+    console.log(this.subscrEventUrl);*/
+    
+      //Отслеживание изменения маршрута router
+    /*this.subscrEventUrl =  this.router.events 
+      .filter(event => event instanceof NavigationEnd)
+      .subscribe((event:NavigationEnd) => {
+        
+        console.log('This router'+this.router.url);
+        // You only receive NavigationStart events
+        if(this.router.url){
+          chrome.storage.sync.set({'navigate': this.router.url}, () => {
+            // Notify that we saved.
+            console.log('Запись в storage о изменении пути добавлена: ');
+            this.subscrEventUrl.unsubscribe();
+             
+          });
+          console.log("Навигация изменилась"+ this.router.url);
+        }
+      });*/
+    
 
     this.user = this.AuthService.user.subscribe(
       (us) => {
@@ -132,6 +146,10 @@ export class AddThemesWordsComponent implements OnInit /*implements CanActivate*
      );
 
   }
+
+  public ngOnDestroy(){
+    //this.subscrEventUrl.unsubscribe();
+}
 
   //Проверка авторизован ли пользователь?
   /*canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {

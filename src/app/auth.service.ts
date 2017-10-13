@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 
-import 'rxjs/add/operator/filter';
+//import 'rxjs/add/operator/filter';
 
 @Injectable()
 export class AuthService {
@@ -167,15 +167,18 @@ export class AuthService {
       }
     }
   }
-
+*/
   //Выход пользователя
   signOut(){
-    this.afAuth.auth.signOut().then(function() {
+    this.afAuth.auth.signOut().then(()=> {
       // Sign-out successful.
+      this.isLoggedIn = false;
+      this.router.navigate(['/login']);
     }).catch(function(error) {
       // An error happened.
+      console.log(error);
     });
-  }*/
+  }
   
 
   /*onAuthState(){
@@ -210,6 +213,25 @@ export class AuthService {
       }
       return false;
     });
-  } 
+  }
+
+  register(email:string, password:string){
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    .catch(function(error:any) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    if (errorCode == 'auth/weak-password') {
+      console.log('The password is too weak.');
+    } else if(errorCode === 'auth/email-already-in-use'){
+      console.log(errorMessage);
+    } else if(errorCode === 'auth/invalid-email'){
+      console.log(errorMessage);
+    } else if(errorCode === 'auth/operation-not-allowed'){
+      console.log(errorMessage);
+    }
+    return false;
+  });
+  }
 
 }

@@ -7,7 +7,7 @@ import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable }
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
-
+import {Subscription} from 'rxjs/Subscription';
 @Injectable()
 export class BdReadAndWriteService {
   //usid;
@@ -86,7 +86,7 @@ export class BdReadAndWriteService {
     //this.db.object('/users');
   }
 
-  addWord(nameWord,translationWord,paramUrl){
+  addWord(nameWord,translationWord,paramUrl):boolean{
     let uid = this.AuthService.afAuth.auth.currentUser.uid;
     let listNode;
     let flag = 0;
@@ -113,16 +113,18 @@ export class BdReadAndWriteService {
           listNode = this.db.list('/users/'+uid+'/words/'+paramUrl+'/'+val[0].$key);
           listNode.push({ 'translationWord': translationWord });
           flag = 1;
-    }else{
+          return true;
+        }else{
         if(flag === 0){
-      listNode.push({ 'nameWord': nameWord }).then(
-        (val)=>val.push({ 'translationWord': translationWord })
-      );
-      flag=1;
-      } 
+          listNode.push({ 'nameWord': nameWord }).then(
+            (val)=>val.push({ 'translationWord': translationWord })
+          );
+          flag=1;
+          } 
         }
         return true;
       });
+      return true;
     }else return false;
     
   }

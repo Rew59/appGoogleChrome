@@ -77,7 +77,7 @@ export class AddWordsComponent implements OnInit {
     this.mdIconRegistry.addSvgIcon(
       'close',
       this.sanitizer.bypassSecurityTrustResourceUrl('assets/close_16px.svg'));
-
+      
     this.route.params.subscribe(params=>
       this.paramUrl = params['id']
     );
@@ -96,8 +96,10 @@ export class AddWordsComponent implements OnInit {
   }
 
   addWord(nameWord,translationWord,paramUrl){
-    
-    this.BdReadAndWriteService.addWord(nameWord,translationWord,paramUrl);
+    const result = this.BdReadAndWriteService.addWord(nameWord,translationWord,paramUrl);
+    if(result){
+      this.translationWord = "";
+    }
   }
 
   deleteWord(wordKey,trWordKey){

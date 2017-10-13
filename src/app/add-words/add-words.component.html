@@ -1,8 +1,5 @@
 <div style="width:100%">
-        <nav>
-            <a routerLink="/addthemes">Назад</a>
-        </nav>
-        
+    
     <form (ngSubmit)="addWord(nameWord,translationWord,this.paramUrl)" #heroForm="ngForm">
       <md-input-container class="example-full-width">
           <input mdInput [(ngModel)]="nameWord" (keyup)="onKey()"  placeholder="Введите новое слово" name="efew">
