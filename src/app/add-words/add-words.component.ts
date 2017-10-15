@@ -3,6 +3,9 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { NgForm }                 from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { FirebaseListObservable } from 'angularfire2/database';
+
 import { AuthService } from '../auth.service';
 import { BdReadAndWriteService } from '../bd-read-and-write.service';
 import { TextSelectionService } from '../text-selection.service';
@@ -21,6 +24,13 @@ export class AddWordsComponent implements OnInit {
   nameWord:String;
   translationWord:String;
   isLoad:boolean;
+  isLoadNewWord:boolean;
+  //Переменные для загрузки слов и infinite scroll
+  uid:string;
+  words;
+  limit:BehaviorSubject<number> = new BehaviorSubject<number>(10);;
+  lastKey:string = '';
+  finished:boolean = false;
 
   constructor(
     private AuthService: AuthService,
@@ -34,8 +44,8 @@ export class AddWordsComponent implements OnInit {
   ) { //Тело конструктора
     
     let th = this;
-    
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    //Удалить комментарий
+    /*chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       
       chrome.tabs.connect(tabs[0].id).onMessage.addListener(
         (msg)=> {
@@ -50,7 +60,7 @@ export class AddWordsComponent implements OnInit {
         }
       );
       
-    });
+    });*/
     
     /*chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
@@ -84,18 +94,53 @@ export class AddWordsComponent implements OnInit {
     /*this.nameWord = this.textSel.textSelection;
     this.textSel.stopText();*/
     
+    this.getWords();
+  }
+  
+  onScroll(){    
+    if (!this.finished) {
+      this.limit.next(this.limit.getValue()+10);
+    }
+  }
 
-    this.AuthService.user.subscribe(
-      (user)=>{
-        if(user != null){
-          this.BdReadAndWriteService.getWords(this.paramUrl);
+  getWords(){
+    //if(this.finished) return;
+    //console.log(this.AuthService.afAuth.auth.currentUser.uid);
+    if(this.paramUrl){
+      this.AuthService.user.subscribe(
+        user=>{
+          this.uid = user.uid;
+          
+          this.words =this.limit.switchMap(limit=>{
+            console.log(limit);
+            return this.BdReadAndWriteService.getWords(this.paramUrl, this.uid, this.limit.getValue());
+          }
+            
+          ).map(
+            data=>{
+              let arrWord:Array<any>= data.slice().reverse()
+              //data = data.reverse();
+              if (arrWord[arrWord.length - 1].$key === this.lastKey) {
+                this.finished = true;
+              }else{
+                
+                this.lastKey = arrWord[arrWord.length - 1].$key;
+              }
+              
+              
+              //console.log(arrWord[arrWord.length - 1].$key);
+              return arrWord;
+            }
+          );
+          
         }
-      }
-    );
-
+      );
+      
+    }
   }
 
   addWord(nameWord,translationWord,paramUrl){
+    this.isLoadNewWord = true;
     const result = this.BdReadAndWriteService.addWord(nameWord,translationWord,paramUrl);
     if(result){
       this.translationWord = "";

@@ -4,6 +4,7 @@ import { RouterModule, Routes }  from '@angular/router';
 import { FormsModule }   from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {HttpModule} from '@angular/http';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdInputModule, 
@@ -57,6 +58,8 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    InfiniteScrollModule,
+
     MdInputModule,
     MdButtonModule,
     MdGridListModule,

@@ -10,7 +10,7 @@ import 'rxjs/add/operator/switchMap';
 import {Subscription} from 'rxjs/Subscription';
 @Injectable()
 export class BdReadAndWriteService {
-  //usid;
+  usid:string;
   themes: FirebaseListObservable<any>;
   words: FirebaseListObservable<any>;
   /* Не приходитнормально свойство AuthService.user_id */
@@ -21,6 +21,12 @@ export class BdReadAndWriteService {
     private router: Router
   
   ) {
+    this.AuthService.afAuth.authState.subscribe(
+    (user) => {
+      if(user){
+        this.usid = user.uid
+      }
+    });
     //console.log("Я конструктор сервиса bdRead");
     
     
@@ -113,7 +119,7 @@ export class BdReadAndWriteService {
           listNode = this.db.list('/users/'+uid+'/words/'+paramUrl+'/'+val[0].$key);
           listNode.push({ 'translationWord': translationWord });
           flag = 1;
-          return true;
+          //return true;
         }else{
         if(flag === 0){
           listNode.push({ 'nameWord': nameWord }).then(
@@ -144,17 +150,28 @@ export class BdReadAndWriteService {
     
   }*/
 
-  getWords(paramUrl){
-    let uid = this.AuthService.afAuth.auth.currentUser.uid;
+  getWords(paramUrl, uid, limit){
+    //let uid = this.AuthService.afAuth.auth.currentUser.uid;
     
+    let query = {
+      orderByKey: true,
+      limitToLast: limit
+    }
+
+    //if(lastKey) query['startAt'] = lastKey;
 
     if(uid && paramUrl){
-      this.words = this.db.list('/users/'+uid+'/words/'+paramUrl);
+      return this.db.list('/users/'+uid+'/words/'+paramUrl,{ query })/*.map(val=>{
+        console.log('234',val);
+        return val;
+      });*/
       
-        return true;
+      /*this.words =*/
+      
+        //return true;
      /* */
 
-    }else return false;
+    }/*else return false;*/
   }
 
   deleteWord(key,paramUrl){

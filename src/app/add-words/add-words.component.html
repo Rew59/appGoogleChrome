@@ -11,8 +11,10 @@
       <md-progress-spinner *ngIf="isLoad" mode="indeterminate"></md-progress-spinner>
       <h3>{{ translationWord }}</h3>
     </form>
+   
     
-    <md-card *ngFor="let word of this.BdReadAndWriteService.words | async" style="margin-top:8px;">
+    
+    <md-card *ngFor="let word of this.words | async" style="margin-top:8px;">
             <md-card-header>
               <md-card-title><h3>{{word.nameWord}}</h3></md-card-title>
             </md-card-header>
@@ -33,7 +35,14 @@
             </md-card-content>
           </md-card>
 
+        
 
+      <div
+          infiniteScroll
+          [infiniteScrollDistance]="2"
+          [infiniteScrollThrottle]="500"
+          (scrolled)="onScroll()">
+      </div>
 
-
+      <md-progress-spinner *ngIf="!finished" mode="indeterminate"></md-progress-spinner>
   </div>
