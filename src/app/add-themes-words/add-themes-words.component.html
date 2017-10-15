@@ -1,13 +1,16 @@
 <div style="width:100%">
-  <md-input-container class="example-full-width">
+  <md-input-container class="example-full-width" style="margin:10px 0 0 6px;">
       <input mdInput #nameTheme placeholder="Введите название темы">
   </md-input-container>
   <button md-raised-button color="primary" (click)="addTheme(nameTheme.value)">Добавить</button>
 </div>
 
+
 <md-grid-list cols="2" rowHeight="2:1">
     <md-grid-tile *ngFor="let theme of this.BdReadAndWriteService.themes | async">
-        <a md-button routerLink="{{ theme.$key }}"> {{ theme.theme }} </a>
-       
+        
+        <a md-raised-button routerLink="{{ theme.$key }}" style="padding:40px 60px;"> {{ theme.theme }} </a>
+        
+    
     </md-grid-tile>
 </md-grid-list>

@@ -13,7 +13,7 @@
     </form>
    
     
-    
+ 
     <md-card *ngFor="let word of this.words | async" style="margin-top:8px;">
             <md-card-header>
               <md-card-title><h3>{{word.nameWord}}</h3></md-card-title>
@@ -34,8 +34,9 @@
               
             </md-card-content>
           </md-card>
-
         
+        
+
 
       <div
           infiniteScroll
