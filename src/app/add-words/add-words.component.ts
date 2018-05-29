@@ -31,6 +31,7 @@ export class AddWordsComponent implements OnInit {
   limit:BehaviorSubject<number> = new BehaviorSubject<number>(10);;
   lastKey:string = '';
   finished:boolean = false;
+  isLoadWords:boolean = false;
 
   constructor(
     private AuthService: AuthService,
@@ -43,9 +44,8 @@ export class AddWordsComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) { //Тело конструктора
     
-    let th = this;
-    //Удалить комментарий
-    /*chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    
+    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       
       chrome.tabs.connect(tabs[0].id).onMessage.addListener(
         (msg)=> {
@@ -53,14 +53,14 @@ export class AddWordsComponent implements OnInit {
           if(msg["nameWord"] && msg["nameWord"] !== ""){
             
             console.log(msg["nameWord"]);
-            th.nameWord = msg["nameWord"];
-            th.onKey();
+            this.nameWord = msg["nameWord"];
+            this.onKey();
           }
           
         }
       );
       
-    });*/
+    });
     
     /*chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
@@ -99,6 +99,7 @@ export class AddWordsComponent implements OnInit {
   
   onScroll(){    
     if (!this.finished) {
+      this.isLoadWords = true;
       this.limit.next(this.limit.getValue()+10);
     }
   }
@@ -118,18 +119,20 @@ export class AddWordsComponent implements OnInit {
             
           ).map(
             data=>{
-              let arrWord:Array<any>= data.slice().reverse()
-              //data = data.reverse();
-              if (arrWord[arrWord.length - 1].$key === this.lastKey) {
-                this.finished = true;
-              }else{
+              if(data.length > 0){
+                let arrWord:Array<any>= data.slice().reverse()
+                //data = data.reverse();
+                if (arrWord[arrWord.length - 1].$key === this.lastKey) {
+                  this.finished = true;
+                }else{
+                  
+                  this.lastKey = arrWord[arrWord.length - 1].$key;
+                }
                 
-                this.lastKey = arrWord[arrWord.length - 1].$key;
+                this.isLoadWords = false;
+                //console.log(arrWord[arrWord.length - 1].$key);
+                return arrWord;
               }
-              
-              
-              //console.log(arrWord[arrWord.length - 1].$key);
-              return arrWord;
             }
           );
           
@@ -140,10 +143,10 @@ export class AddWordsComponent implements OnInit {
   }
 
   addWord(nameWord,translationWord,paramUrl){
-    this.isLoadNewWord = true;
     const result = this.BdReadAndWriteService.addWord(nameWord,translationWord,paramUrl);
     if(result){
       this.translationWord = "";
+      this.limit.next(this.limit.getValue()+1);
     }
   }
 

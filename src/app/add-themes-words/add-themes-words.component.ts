@@ -32,8 +32,8 @@ export class AddThemesWordsComponent implements OnInit/*, OnDestroy /*implements
   constructor(private AuthService: AuthService,
     public BdReadAndWriteService:BdReadAndWriteService,
     private router: Router,
-    public textSel:TextSelectionService/*,
-  public chromeNavigateService:AddChromeStorageNavigateService*/) {
+    public textSel:TextSelectionService,
+    public chromeNavigateService:AddChromeStorageNavigateService) {
      //this.BdReadAndWriteService.getThemes().subscribe((val)=>console.log(val));
      /*this.AuthService.afAuth.authState.subscribe(
       (user: firebase.User) => {

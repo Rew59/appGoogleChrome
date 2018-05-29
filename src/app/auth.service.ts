@@ -45,15 +45,15 @@ export class AuthService {
       (user: firebase.User) => {
         if(user){
           this.isLoggedIn = true;
-          //Удалить коммент
-          /*chrome.storage.sync.get(
+          
+          chrome.storage.sync.get(
             (val)=>{
               if(val.navigate && val.navigate !== this.router.url){
                 console.log('Сработал переход по '+val.navigate);
                 this.router.navigate([val.navigate]);
               }
             }
-          );*/
+          );
 
         } else{
           this.isLoggedIn = false;

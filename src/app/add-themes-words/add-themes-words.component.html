@@ -5,12 +5,21 @@
   <button md-raised-button color="primary" (click)="addTheme(nameTheme.value)">Добавить</button>
 </div>
 
-
-<md-grid-list cols="2" rowHeight="2:1">
+<!--
+<md-grid-list cols="2" rowHeight = "2:1" style="min-width: 260px;">
     <md-grid-tile *ngFor="let theme of this.BdReadAndWriteService.themes | async">
         
-        <a md-raised-button routerLink="{{ theme.$key }}" style="padding:40px 60px;"> {{ theme.theme }} </a>
+        <a md-raised-button routerLink="{{ theme.$key }}" style="padding:20px;"> {{ theme.theme }} </a>
         
     
     </md-grid-tile>
 </md-grid-list>
+-->
+<md-grid-list cols="1" rowHeight = "100px" style="min-width: 260px;">
+        <md-grid-tile *ngFor="let theme of this.BdReadAndWriteService.themes | async">
+            
+            <a md-raised-button routerLink="{{ theme.$key }}" style="padding:20px; margin:0 30px; width:100%"> {{ theme.theme }} </a>
+            
+        
+        </md-grid-tile>
+    </md-grid-list>
